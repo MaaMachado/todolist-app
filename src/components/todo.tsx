@@ -29,28 +29,9 @@ export default function TodoApp() {
 
   return (
     <View style={styles.container}>
+
       <Text style={styles.title}>To-Do List</Text>
-      <FlatList
-        data={tarefas}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item, index }) => (
-          <View style={styles.taskContainer}>
-            <Text
-              style={{
-                ...styles.task,
-                textDecorationLine: item.concluida ? 'line-through' : 'none',
-              }}
-            >
-              {item.texto}
-            </Text>
-            <Button
-              title={item.concluida ? 'Desfazer' : 'Concluir'}
-              onPress={() => marcarConcluida(index)}
-            />
-            <Button title="Excluir" onPress={() => excluirTarefa(index)} />
-          </View>
-        )}
-      />
+
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -61,8 +42,38 @@ export default function TodoApp() {
         <TouchableOpacity onPress={adicionarTarefa}>
             <Text style={styles.addButton}>▶</Text>
         </TouchableOpacity>
-
       </View>
+      
+      <FlatList
+        data={tarefas}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item, index }) => (
+          <View style={styles.taskContainer}>
+            <View style={styles.bola}></View>
+
+            <Text
+              style={{
+                ...styles.task,
+                textDecorationLine: item.concluida ? 'line-through' : 'none',
+              }}
+            >
+              {item.texto}
+            </Text>
+
+            <View style={styles.btnSpace}>
+              <TouchableOpacity onPress={() => marcarConcluida(index)}>
+                <Text style={styles.buttonText}>{item.concluida ? '🔁' : '✅'}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => excluirTarefa(index)}>
+                <Text style={styles.buttonText}>❌</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+      />
+      
+
     </View>
   );
 }
@@ -73,9 +84,11 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   title: {
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: 'bold',
     marginBottom: 16,
+    marginTop: 50,
+    textAlign: 'center',
   },
   inputContainer: {
     flexDirection: 'row',
@@ -86,34 +99,45 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
-    marginRight: 8,
     padding: 8,
   },
   addButton: {
     backgroundColor: '#2088AF',
-    padding: 8,
-    borderRadius: 5,
-  },
-  addButtonText: {
-    color: '#fff',
+    padding: 10.3,
     fontWeight: 'bold',
   },
   taskContainer: {
+    marginTop: 15,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 8,
   },
+  bola: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    borderColor: '#2088AF',
+    borderWidth: 1,
+    marginRight: 30,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    marginLeft: 'auto',
+  },
   task: {
-    fontSize: 18,
+    fontSize: 16,
   },
   completedTask: {
-    fontSize: 18,
+    fontSize: 20,
     textDecorationLine: 'line-through',
-    color: '#999',
+    color: '#000',
   },
-  deleteButton: {
-    color: 'red',
+  btnSpace: {
+    flexDirection: 'row',
+    marginLeft: 'auto',
+  },
+  buttonText: {
+    fontSize: 18,
     marginLeft: 8,
   },
 });
